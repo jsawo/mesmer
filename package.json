@@ -1,8 +1,8 @@
 {
-  "name": "noise_blender",
-  "productName": "noise_blender",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "noise-blender",
+  "productName": "Noise Blender",
+  "version": "0.0.1",
+  "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "jacek.sawoszczuk",
+    "name": "Jacek Sawoszczuk",
     "email": "jacek.sawoszczuk@gmail.com"
   },
   "license": "MIT",
