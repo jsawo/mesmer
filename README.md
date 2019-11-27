@@ -1,3 +1,3 @@
-# Noise Blender
+# Mesmer
 
 not much here yet
