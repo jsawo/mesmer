@@ -9,7 +9,24 @@
 </template>
 
 <script>
-export default {};
+export default {
+	data() {
+		return {
+			players: [
+				{
+					tracks: [
+						{ title: 'file1' },
+						{ title: 'generator1' },
+						{ title: 'whitenoise' },
+					],
+				},
+			],
+		};
+	},
+	methods: {
+		stuff() {},
+	},
+};
 </script>
 
 <style lang="scss">
