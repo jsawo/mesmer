@@ -29,6 +29,8 @@ export default {
 	methods: {
 		volumeChanged() {
 			this.player.player.volume = Math.pow(parseFloat(this.player.volume), 2);
+			if (this.volumeBeforeMute && this.player.player.volume > 0)
+				this.volumeBeforeMute = undefined;
 		},
 		setVolume(level) {
 			this.player.volume = level;
