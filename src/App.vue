@@ -1,133 +1,95 @@
 <template>
 	<div>
-		Mesmer
-		<br /><br />
-		(＠_＠)
+		<div id="sliders">
+			<span v-for="(player, index) in players" :key="index">
+				<input
+					type="range"
+					min="0"
+					max="1"
+					step="0.01"
+					v-model="player.volume"
+					@input="volumeChanged(index)"
+				/>
+				<br />
+				{{ player.track.title }}
+				<br />
+				{{ player.volume }}
+			</span>
+		</div>
+
 		<br /><br />
 
 		<input
 			type="range"
-			id="masterVolume"
 			min="0"
 			max="1"
 			step="0.01"
 			v-model="masterVolume"
-			@input="volumeChanged"
+			@input="volumeChanged()"
 		/>
-		<input
-			type="range"
-			id="vol0"
-			min="0"
-			max="1"
-			step="0.01"
-			v-model="masterVolume"
-			@input="volumeChanged"
-		/>
-		<input
-			type="range"
-			id="vol1"
-			min="0"
-			max="1"
-			step="0.01"
-			v-model="masterVolume"
-			@input="volumeChanged"
-		/>
+		<br /><br />
+		Volume: {{ masterVolume }}
 	</div>
 </template>
 
 <script>
 import Pizzicato from 'pizzicato';
+import config from './configs/config_test';
 
 export default {
 	components: {},
 	data() {
 		return {
 			masterVolume: 0.3,
+			defaultVolume: 0.5,
 			mainPlayer: null,
 			players: [],
-			machines: [
-				{
-					tracks: [
-						{
-							title: 'file1',
-							file: 'folder/name.ogg',
-							volume: 0.5,
-							stretch: 1,
-						},
-						{
-							title: 'generator1',
-							volume: 0.2,
-							generator: {
-								type: 'sine',
-								frequency: 440,
-								attack: 2,
-								release: 5,
-							},
-						},
-						{ title: 'generator2' },
-						{
-							title: 'somescript',
-							generator: {
-								type: 'script',
-								options: {
-									audioFunction: function(e) {
-										var output = e.outputBuffer.getChannelData(0);
-										for (var i = 0; i < e.outputBuffer.length; i++)
-											output[i] = Math.random();
-									},
-								},
-							},
-						},
-					],
-				},
-			],
+			tracks: config,
 		};
 	},
 	computed: {
 		masterVolumeSliderValue: function() {},
 	},
 	methods: {
-		volumeChanged() {
-			this.mainPlayer.volume = parseFloat(this.masterVolume);
+		volumeChanged(playerId) {
+			if (playerId !== undefined) {
+				this.players[playerId].player.volume = parseFloat(
+					this.players[playerId].volume
+				);
+			} else {
+				this.mainPlayer.volume = parseFloat(this.masterVolume);
+			}
 		},
 	},
 	mounted() {
-		var sawtoothWave = new Pizzicato.Sound({
-			source: 'wave',
-			options: {
-				type: 'sawtooth',
-			},
+		this.mainPlayer = new Pizzicato.Group();
+
+		this.tracks.forEach((track, index) => {
+			switch (track.source) {
+				case 'wave':
+					const trackPlayer = new Pizzicato.Sound({
+						source: 'wave',
+						options: track.options,
+					});
+
+					trackPlayer.volume = track.volume || this.defaultVolume;
+					this.players.push({
+						track: track,
+						player: trackPlayer,
+						volume: track.volume || this.defaultVolume,
+					});
+
+					this.mainPlayer.addSound(trackPlayer);
+					break;
+			}
 		});
 
-		var sineWave = new Pizzicato.Sound({
-			source: 'wave',
-			options: {
-				type: 'sine',
-				frequency: 440,
-			},
-		});
+		this.mainPlayer.volume = this.masterVolume = 0.005;
+		this.mainPlayer.play();
 
-		var delay = new Pizzicato.Effects.Delay();
-		sawtoothWave.addEffect(delay);
-
-		var group = new Pizzicato.Group([sawtoothWave, sineWave]);
-
-		group.volume = 0.005;
-		group.play();
-
-		this.players.push(sineWave);
-		this.players.push(sawtoothWave);
-		this.mainPlayer = group;
+		console.log(this.$data);
 	},
 };
 </script>
 
-<style lang="scss">
-#app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	text-align: center;
-	color: #fef0fe;
-	font-size: 3rem;
-	margin-top: 60px;
-}
-</style>
+<style lang="scss"></style>
