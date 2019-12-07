@@ -1,48 +1,30 @@
 <template>
 	<div>
 		<div id="sliders">
-			<span v-for="(player, index) in players" :key="index">
-				<input
-					type="range"
-					min="0"
-					max="1"
-					step="0.01"
-					v-model="player.volume"
-					@input="volumeChanged(index)"
-				/>
-				<br />
-				{{ player.track.title }}
-				<br />
-				{{ player.volume }}
-			</span>
+			<slider
+				v-for="(player, index) in players"
+				:key="index"
+				:player="player"
+			></slider>
 		</div>
 
 		<br /><br />
 
-		<input
-			type="range"
-			min="0"
-			max="1"
-			step="0.01"
-			v-model="masterVolume"
-			@input="volumeChanged()"
-		/>
-		<br />
-		<span v-if="ready"> Master Vol: {{ mainPlayer.volume | float }}</span>
+		<slider :player="mainPlayer" title="Master"></slider>
 	</div>
 </template>
 
 <script>
 import Pizzicato from 'pizzicato';
 import config from '../configs/config_test';
+import Slider from './Slider.vue';
 
 export default {
-	components: {},
+	components: { Slider },
 	data() {
 		return {
-			masterVolume: 0.3,
 			defaultVolume: 0.5,
-			mainPlayer: null,
+			mainPlayer: { player: null, volume: 0.3 },
 			players: [],
 			tracks: config,
 			volumeCurveExponent: 2,
@@ -52,28 +34,9 @@ export default {
 	computed: {
 		masterVolumeSliderValue: function() {},
 	},
-	methods: {
-		volumeChanged(playerId) {
-			if (playerId !== undefined) {
-				this.players[playerId].player.volume = Math.pow(
-					parseFloat(this.players[playerId].volume),
-					this.volumeCurveExponent
-				);
-			} else {
-				this.mainPlayer.volume = Math.pow(
-					parseFloat(this.masterVolume),
-					this.volumeCurveExponent
-				);
-			}
-		},
-	},
-	filters: {
-		float(val) {
-			return Math.round(val * 100) / 100;
-		},
-	},
+	methods: {},
 	mounted() {
-		this.mainPlayer = new Pizzicato.Group();
+		this.mainPlayer.player = new Pizzicato.Group();
 
 		this.tracks.forEach((track, index) => {
 			switch (track.source) {
@@ -90,17 +53,15 @@ export default {
 						volume: track.volume || this.defaultVolume,
 					});
 
-					this.mainPlayer.addSound(trackPlayer);
+					this.mainPlayer.player.addSound(trackPlayer);
 					break;
 			}
 		});
 
-		this.mainPlayer.volume = this.masterVolume = 0.005;
-		this.mainPlayer.play();
+		this.mainPlayer.volume = this.mainPlayer.player.volume = 0.005;
+		this.mainPlayer.player.play();
 
 		this.ready = true;
-
-		console.log(this.$data);
 	},
 };
 </script>
