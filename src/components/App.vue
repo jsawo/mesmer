@@ -27,14 +27,14 @@
 			v-model="masterVolume"
 			@input="volumeChanged()"
 		/>
-		<br /><br />
-		Volume: {{ masterVolume }}
+		<br />
+		<span v-if="ready"> Master Vol: {{ mainPlayer.volume | float }}</span>
 	</div>
 </template>
 
 <script>
 import Pizzicato from 'pizzicato';
-import config from './configs/config_test';
+import config from '../configs/config_test';
 
 export default {
 	components: {},
@@ -45,6 +45,8 @@ export default {
 			mainPlayer: null,
 			players: [],
 			tracks: config,
+			volumeCurveExponent: 2,
+			ready: false,
 		};
 	},
 	computed: {
@@ -53,12 +55,21 @@ export default {
 	methods: {
 		volumeChanged(playerId) {
 			if (playerId !== undefined) {
-				this.players[playerId].player.volume = parseFloat(
-					this.players[playerId].volume
+				this.players[playerId].player.volume = Math.pow(
+					parseFloat(this.players[playerId].volume),
+					this.volumeCurveExponent
 				);
 			} else {
-				this.mainPlayer.volume = parseFloat(this.masterVolume);
+				this.mainPlayer.volume = Math.pow(
+					parseFloat(this.masterVolume),
+					this.volumeCurveExponent
+				);
 			}
+		},
+	},
+	filters: {
+		float(val) {
+			return Math.round(val * 100) / 100;
 		},
 	},
 	mounted() {
@@ -86,6 +97,8 @@ export default {
 
 		this.mainPlayer.volume = this.masterVolume = 0.005;
 		this.mainPlayer.play();
+
+		this.ready = true;
 
 		console.log(this.$data);
 	},
