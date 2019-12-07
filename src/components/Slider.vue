@@ -12,7 +12,7 @@
 		<div @click="toggleMute">
 			{{ _title }}
 			<br />
-			{{ player.volume }}
+			{{ _volume }}
 		</div>
 	</div>
 </template>
@@ -47,6 +47,11 @@ export default {
 	computed: {
 		_title() {
 			return this.titleOverride || this.title || this.player.track.title;
+		},
+		_volume() {
+			return this.volumeBeforeMute
+				? `m ${this.volumeBeforeMute}`
+				: this.player.volume;
 		},
 	},
 };
