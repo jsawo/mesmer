@@ -9,25 +9,7 @@ module.exports = [
 		},
 	},
 	{
-		title: 'Sine 220',
-		volume: 0.2,
-		source: 'wave',
-		options: {
-			type: 'sine',
-			frequency: 220,
-		},
-	},
-	{
-		title: 'Sine 440',
-		volume: 0.2,
-		source: 'wave',
-		options: {
-			type: 'sine',
-			frequency: 440,
-		},
-	},
-	{
-		title: 'Sine 660',
+		title: 'Sine wave',
 		volume: 0.2,
 		source: 'wave',
 		options: {
@@ -38,33 +20,7 @@ module.exports = [
 		},
 	},
 	{
-		title: 'Sine 880',
-		volume: 0.2,
-		source: 'wave',
-		options: {
-			type: 'sine',
-			frequency: 880,
-		},
-	},
-	{
-		title: 'Sine 1100',
-		volume: 0.2,
-		source: 'wave',
-		options: {
-			type: 'sine',
-			frequency: 1100,
-		},
-	},
-	// {
-	// 	title: 'Sawtooth gen',
-	// 	volume: 0.4,
-	// 	source: 'wave',
-	// 	options: {
-	// 		type: 'sawtooth',
-	// 	},
-	// },
-	{
-		title: 'My Script',
+		title: 'Noise script',
 		source: 'script',
 		options: {
 			audioFunction: function(e) {

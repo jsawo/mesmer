@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="slider_container">
 		<input
 			type="range"
 			min="0"
@@ -9,10 +9,9 @@
 			@input="volumeChanged"
 		/>
 
-		<div @click="toggleMute">
-			{{ _title }}
-			<br />
-			{{ _volume }}
+		<div class="desc" @click="toggleMute">
+			<div class="title">{{ _title }}</div>
+			<div class="volume">{{ _volume }}</div>
 		</div>
 	</div>
 </template>
@@ -62,5 +61,21 @@ export default {
 <style>
 input[type='range'] {
 	-webkit-appearance: slider-vertical;
+	max-width: 20px;
+}
+.slider_container {
+	flex-grow: 0;
+	flex-shrink: 1;
+	margin: 0 0.3rem;
+}
+.desc {
+	font-size: 0.9rem;
+	color: #bbb;
+	user-select: none;
+	cursor: pointer;
+}
+.desc:hover {
+	font-size: 0.9rem;
+	color: #fff;
 }
 </style>
