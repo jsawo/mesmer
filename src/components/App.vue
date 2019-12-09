@@ -16,16 +16,16 @@
 
 <script>
 import Pizzicato from 'pizzicato';
-// import config from '../configs/config_noise';
-import config from '../configs/config_sine';
+import config from '../configs/config_noise';
+// import config from '../configs/config_sine';
 import Slider from './Slider.vue';
 
 export default {
 	components: { Slider },
 	data() {
 		return {
-			defaultVolume: 0.5,
-			mainPlayer: { player: null, volume: 0.3 },
+			defaultVolume: 0.4,
+			mainPlayer: { player: null, volume: 0.25 },
 			players: [],
 			tracks: config,
 			volumeCurveExponent: 2,
@@ -36,7 +36,7 @@ export default {
 		masterVolumeSliderValue: function() {},
 	},
 	methods: {},
-	mounted() {
+	created() {
 		this.mainPlayer.player = new Pizzicato.Group();
 
 		this.tracks.forEach((track, index) => {
@@ -48,9 +48,6 @@ export default {
 						source: track.source,
 						options: track.options,
 					});
-					console.log(
-						`Track volume type: ${typeof track.volume} ${track.volume}`
-					);
 					break;
 			}
 
@@ -70,7 +67,10 @@ export default {
 			}
 		});
 
-		this.mainPlayer.volume = this.mainPlayer.player.volume = this.mainPlayer.volume;
+		this.mainPlayer.player.volume = Math.pow(
+			parseFloat(this.mainPlayer.volume),
+			2
+		);
 		this.mainPlayer.player.play();
 
 		this.ready = true;
