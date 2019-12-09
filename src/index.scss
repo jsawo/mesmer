@@ -1,8 +1,21 @@
 body {
 	font-family: Roboto, Helvetica, Arial, sans-serif;
 	margin: auto;
-	max-width: 38rem;
 	padding: 2rem;
-	background-color: black;
+	background-color: #050307;
 	color: white;
+}
+
+#app {
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	text-align: center;
+	color: #fef0fe;
+	font-size: 1.3rem;
+	margin-top: 60px;
+	width: 100%;
+
+	#sliders {
+		display: flex;
+		justify-content: center;
+	}
 }

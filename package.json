@@ -63,7 +63,9 @@
 		}
 	},
 	"dependencies": {
-		"electron-squirrel-startup": "^1.0.0"
+		"electron-squirrel-startup": "^1.0.0",
+		"pizzicato": "^0.6.4",
+		"vue": "^2.6.10"
 	},
 	"devDependencies": {
 		"@electron-forge/cli": "6.0.0-beta.45",
@@ -83,7 +85,6 @@
 		"style-loader": "^0.23.1",
 		"ts-loader": "^6.2.1",
 		"typescript": "^3.7.2",
-		"vue": "^2.6.10",
 		"vue-loader": "^15.7.2",
 		"vue-template-compiler": "^2.6.10",
 		"webpack": "^4.41.2"
